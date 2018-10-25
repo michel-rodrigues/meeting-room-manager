@@ -1,0 +1,5 @@
+*.pyc
+*.orig
+CACHE/*
+.coverage
+htmlcov/*
