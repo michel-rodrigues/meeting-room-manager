@@ -13,6 +13,9 @@ build: ## Build the container and project
 	docker run -dit --name $(CONTAINER) -v $(shell pwd):/deploy -p 8000:8000 $(IMAGE) /bin/sh
 	$(MANAGECMD) /bin/sh -c "python manage.py migrate"
 
+run:
+	docker run -dit --name $(CONTAINER) -v $(shell pwd):/deploy -p 8000:8000 $(IMAGE) /bin/sh
+
 test: ## Run tests
 	$(MANAGECMD) python manage.py test
 
@@ -24,7 +27,7 @@ cmd: ## Access bash
 
 up: ## Start webserver
 	docker restart $(CONTAINER)
-	$(MANAGECMD) /bin/sh -c "python manage.py runserver 127.0.0.1:8000"
+	$(MANAGECMD) /bin/sh -c "python manage.py runserver 0.0.0.0:8000"
 
 down:
 	docker stop $(CONTAINER)
