@@ -6,9 +6,10 @@ from . import views
 app_name = 'meetingroom'
 
 urlpatterns = [
+    path('manager/', views.CreateRoomAPIView.as_view(), name='create'),
     path(
-        'create/',
-        views.CreateRoomAPIView.as_view(),
-        name='create'
+        'manager/<slug:slug>/',
+        views.UpdateDestroyRoomAPIView.as_view(),
+        name='retrieve-update-destroy'
     ),
 ]
