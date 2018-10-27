@@ -97,6 +97,15 @@ DATABASES = {
     }
 }
 
+MIGRATION_MODULES = {
+    'admin': None,
+    'auth': None,
+    'contenttypes': None,
+    'sessions': None,
+
+    'meetingroom': None,
+    'schedule': None,
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
