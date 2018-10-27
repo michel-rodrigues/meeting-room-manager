@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
@@ -6,9 +6,10 @@ from . import views
 app_name = 'meetingroom'
 
 urlpatterns = [
-    path('manager/', views.CreateRoomAPIView.as_view(), name='create'),
+    path('', views.CreateRoomAPIView.as_view(), name='create'),
+    path('schedule/', include('schedule.urls', namespace='schedule')),
     path(
-        'manager/<slug:slug>/',
+        '<slug:slug>/',
         views.UpdateDestroyRoomAPIView.as_view(),
         name='retrieve-update-destroy'
     ),
