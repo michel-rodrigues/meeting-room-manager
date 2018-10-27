@@ -2,15 +2,15 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 
+from commons.base_models import BaseModel
 from meetingroom.models import Room
 
 
-class ScheduleItem(models.Model):
+class ScheduleItem(BaseModel):
     title = models.CharField(max_length=280)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('-start',)
