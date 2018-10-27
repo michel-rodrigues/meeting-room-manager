@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase, APIRequestFactory
 
 from meetingroom.models import Room
-from .views import ListCreateScheduleItemAPIView
+from ..views import ListCreateScheduleItemAPIView
 
 
 class ListCreateScheduleItemTest(APITestCase):
