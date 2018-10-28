@@ -37,7 +37,7 @@ class CreateRoomTest(APITestCase):
         )
 
 
-class RetrieveUpdateDestroyRoomTest(APITestCase):
+class UpdateDestroyRoomTest(APITestCase):
 
     def setUp(self):
         self.view = UpdateDestroyRoomAPIView.as_view()
@@ -47,7 +47,7 @@ class RetrieveUpdateDestroyRoomTest(APITestCase):
             'slug': 'sala-da-justica',
         }
         self.url = reverse(
-            'meetingroom:retrieve-update-destroy',
+            'meetingroom:update-destroy',
             kwargs={'slug': self.data['slug']}
         )
         Room.objects.create(name=self.data['name'], slug=self.data['slug'])

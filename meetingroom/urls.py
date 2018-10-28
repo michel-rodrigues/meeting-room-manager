@@ -11,6 +11,6 @@ urlpatterns = [
     path(
         '<slug:slug>/',
         views.UpdateDestroyRoomAPIView.as_view(),
-        name='retrieve-update-destroy'
+        name='update-destroy'
     ),
 ]
