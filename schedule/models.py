@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Q
 
 from commons.base_models import BaseModel
+from commons.exceptions import ScheduleConflict
 from meetingroom.models import Room
 
 
@@ -26,10 +27,7 @@ class ScheduleItem(BaseModel):
     def save(self, *args, **kwargs):
         edit = self._is_editing()
         if not self._room_available(edit):
-            raise ValidationError(
-                message='The room is already booked in this period.',
-                code='conflict'
-            )
+            raise ScheduleConflict()
         super().save(*args, **kwargs)
 
     def _is_editing(self):

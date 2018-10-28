@@ -1,9 +1,9 @@
 from datetime import timedelta
 
-from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 
+from commons.exceptions import ScheduleConflict
 from meetingroom.models import Room
 from ..models import ScheduleItem
 
@@ -34,7 +34,7 @@ class ScheduleItemTest(TestCase):
         self.schedule_item_2.start = self.now
         self.schedule_item_2.end = self.one_hour_later
         self.assertFalse(self.schedule_item_2._room_available())
-        with self.assertRaises(ValidationError) as error:
+        with self.assertRaises(ScheduleConflict) as error:
             self.schedule_item_2.save()
         error_message = 'The room is already booked in this period.'
         self.assertEqual(error.exception.message, error_message)
@@ -44,7 +44,7 @@ class ScheduleItemTest(TestCase):
         self.schedule_item_2.start = self.now + timedelta(minutes=30)
         self.schedule_item_2.end = self.one_hour_later + timedelta(minutes=30)
         self.assertFalse(self.schedule_item_2._room_available())
-        with self.assertRaises(ValidationError) as error:
+        with self.assertRaises(ScheduleConflict) as error:
             self.schedule_item_2.save()
         error_message = 'The room is already booked in this period.'
         self.assertEqual(error.exception.message, error_message)
@@ -54,7 +54,7 @@ class ScheduleItemTest(TestCase):
         self.schedule_item_2.start = self.now - timedelta(minutes=30)
         self.schedule_item_2.end = self.one_hour_later - timedelta(minutes=30)
         self.assertFalse(self.schedule_item_2._room_available())
-        with self.assertRaises(ValidationError) as error:
+        with self.assertRaises(ScheduleConflict) as error:
             self.schedule_item_2.save()
         error_message = 'The room is already booked in this period.'
         self.assertEqual(error.exception.message, error_message)
