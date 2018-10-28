@@ -41,7 +41,7 @@ class ListCreateScheduleItemTest(APITestCase):
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
         self.data['room'] = {
-            'title': self.room.name,
+            'name': self.room.name,
             'slug': self.room.slug,
         }
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -123,7 +123,7 @@ class UpdateDestroyRoomTest(APITestCase):
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
         self.data['room'] = {
-            'title': self.room.name,
+            'name': self.room.name,
             'slug': self.room.slug,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -162,7 +162,7 @@ class UpdateDestroyRoomTest(APITestCase):
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
         self.data['room'] = {
-            'title': room.name,
+            'name': room.name,
             'slug': room.slug,
         }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
