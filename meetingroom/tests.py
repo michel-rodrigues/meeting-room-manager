@@ -32,8 +32,8 @@ class CreateRoomTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(error_detail.code, 'unique')
         self.assertEqual(
-            error_detail.title(),
-            'Room With This Slug Already Exists.',
+            str(error_detail),
+            'room with this slug already exists.',
         )
 
 
@@ -74,8 +74,8 @@ class UpdateDestroyRoomTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(error_detail.code, 'unique')
         self.assertEqual(
-            error_detail.title(),
-            'Room With This Slug Already Exists.',
+            str(error_detail),
+            'room with this slug already exists.',
         )
 
     def test_delete_a_room(self):
