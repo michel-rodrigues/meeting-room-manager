@@ -22,16 +22,16 @@ class ListCreateScheduleItemTest(APITestCase):
         self.view = ListCreateScheduleItemAPIView.as_view()
         self.factory = APIRequestFactory()
         self.url = reverse('meetingroom:schedule:list-create')
+        self.room = Room.objects.create(
+            name='Torre Stark',
+            slug='torre-stark',
+        )
         self.data = {
             'title': 'Planning Novos Negócios',
-            'room': 'torre-stark',
+            'room': self.room.pk,
             'start': self.now,
             'end': self.one_hour_later,
         }
-        self.room = Room.objects.create(
-            name='Torre Stark',
-            slug=self.data.get('room'),
-        )
 
     def test_create_item_schedule(self):
         request = self.factory.post(self.url, self.data, format='json')
@@ -40,10 +40,6 @@ class ListCreateScheduleItemTest(APITestCase):
         end = self.data['end'].isoformat()
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
-        self.data['room'] = {
-            'name': self.room.name,
-            'slug': self.room.slug,
-        }
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, self.data)
 
@@ -57,12 +53,15 @@ class ListCreateScheduleItemTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_fail_create_item_schedule_when_room_does_not_exist(self):
-        self.data['room'] = 'batcaverna'
+        self.data['room'] = 2
         request = self.factory.post(self.url, self.data, format='json')
         response = self.view(request).render()
         error_detail = response.data['room'][0]
-        self.assertEqual(error_detail.code, 'required')
-        self.assertEqual(str(error_detail), "Room doesn't exist")
+        self.assertEqual(error_detail.code, 'does_not_exist')
+        self.assertEqual(
+            str(error_detail),
+            'Invalid pk "2" - object does not exist.'
+        )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_fail_create_item_schedule_when_there_are_period_conflict(self):
@@ -90,16 +89,16 @@ class UpdateDestroyRoomTest(APITestCase):
         self.one_hour_later = self.now + timedelta(hours=1)
         self.view = UpdateDestroyScheduleItemAPIView.as_view()
         self.factory = APIRequestFactory()
+        self.room = Room.objects.create(
+            name='Torre Stark',
+            slug='torre-stark',
+        )
         self.data = {
             'title': 'Planning Novos Negócios',
-            'room': 'torre-stark',
+            'room': self.room.pk,
             'start': self.now,
             'end': self.one_hour_later,
         }
-        self.room = Room.objects.create(
-            name='Torre Stark',
-            slug=self.data.get('room'),
-        )
         self.schedule_item = ScheduleItem.objects.create(
             title=self.data.get('title'),
             room=self.room,
@@ -122,10 +121,6 @@ class UpdateDestroyRoomTest(APITestCase):
         end = self.data['end'].isoformat()
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
-        self.data['room'] = {
-            'name': self.room.name,
-            'slug': self.room.slug,
-        }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, self.data)
 
@@ -153,7 +148,7 @@ class UpdateDestroyRoomTest(APITestCase):
             name='Edifício Baxter',
             slug='edificio-baxter',
         )
-        self.data['room'] = room.slug
+        self.data['room'] = room.pk
         request = self.factory.put(self.url, self.data, format='json')
         response = self.view(request, pk=self.schedule_item.pk).render()
 
@@ -161,10 +156,6 @@ class UpdateDestroyRoomTest(APITestCase):
         end = self.data['end'].isoformat()
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
-        self.data['room'] = {
-            'name': room.name,
-            'slug': room.slug,
-        }
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, self.data)
 
@@ -175,7 +166,7 @@ class UpdateDestroyRoomTest(APITestCase):
         )
         self.data['start'] = self.now + timedelta(hours=1)
         self.data['end'] = self.one_hour_later + timedelta(hours=1)
-        self.data['room'] = room.slug
+        self.data['room'] = room.pk
         ScheduleItem.objects.create(
             title=self.data.get('title'),
             room=room,
