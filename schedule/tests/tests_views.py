@@ -176,3 +176,9 @@ class UpdateDestroyRoomTest(APITestCase):
             str(error_detail),
             'The room is already booked in this period.'
         )
+
+    def test_deleting_a_schedule_item(self):
+        request = self.factory.delete(self.url)
+        response = self.view(request, pk=self.schedule_item.pk).render()
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ScheduleItem.objects.exists())
