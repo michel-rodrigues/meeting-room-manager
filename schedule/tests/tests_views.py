@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from datetime import timedelta
 
 from django.urls import reverse
@@ -33,7 +34,7 @@ class ListCreateScheduleItemTest(APITestCase):
             'end': self.one_hour_later,
         }
 
-    def test_create_item_schedule(self):
+    def test_creating_item_schedule(self):
         request = self.factory.post(self.url, self.data, format='json')
         response = self.view(request).render()
         start = self.data['start'].isoformat()
@@ -80,6 +81,41 @@ class ListCreateScheduleItemTest(APITestCase):
         self.assertEqual(error_detail.code, 'conflict')
         self.assertEqual(str(error_detail), error_message)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_listing_all_items(self):
+        schedule_item_1 = ScheduleItem.objects.create(
+            title='Planning Novos Negócios',
+            room=self.room,
+            start=self.now,
+            end=self.one_hour_later,
+        )
+        schedule_item_2 = ScheduleItem.objects.create(
+            title='Planning Logística',
+            room=self.room,
+            start=self.now + timedelta(hours=1),
+            end=self.one_hour_later + timedelta(hours=1),
+        )
+        room = OrderedDict(name=self.room.name, slug=self.room.slug)
+        serialized_schedule_item_1 = OrderedDict(
+            title=schedule_item_1.title,
+            room=room,
+            start=schedule_item_1.start.isoformat().replace('+00:00', 'Z'),
+            end=schedule_item_1.end.isoformat().replace('+00:00', 'Z'),
+        )
+        serialized_schedule_item_2 = OrderedDict(
+            title=schedule_item_2.title,
+            room=room,
+            start=schedule_item_2.start.isoformat().replace('+00:00', 'Z'),
+            end=schedule_item_2.end.isoformat().replace('+00:00', 'Z'),
+        )
+        expected_data = [
+            serialized_schedule_item_2,
+            serialized_schedule_item_1,
+        ]
+        request = self.factory.get(self.url)
+        response = self.view(request).render()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, expected_data)
 
 
 class UpdateDestroyRoomTest(APITestCase):

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ValidationError
 
 from commons.exceptions import ScheduleConflict
+from meetingroom.serializers import RoomSerializer
 
 from .models import ScheduleItem
 
@@ -29,3 +30,7 @@ class ScheduleItemSerializer(serializers.ModelSerializer):
                 detail={'room': [error.message]},
                 code=error.code,
             )
+
+
+class ScheduleItemListSerializer(ScheduleItemSerializer):
+    room = RoomSerializer(read_only=True)
