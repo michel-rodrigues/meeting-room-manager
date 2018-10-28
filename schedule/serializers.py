@@ -35,4 +35,11 @@ class ScheduleItemSerializer(serializers.ModelSerializer):
                 code=error.code,
             )
 
-    # def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
+        try:
+            return super().update(instance, validated_data)
+        except ScheduleConflict as error:
+            raise ValidationError(
+                detail={'room': [error.message]},
+                code=error.code,
+            )

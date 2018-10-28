@@ -11,4 +11,9 @@ urlpatterns = [
         views.ListCreateScheduleItemAPIView.as_view(),
         name='list-create'
     ),
+    path(
+        '<int:pk>/',
+        views.UpdateDestroyScheduleItemAPIView.as_view(),
+        name='update-destroy'
+    ),
 ]
