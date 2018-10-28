@@ -11,6 +11,11 @@ class ListCreateScheduleItemAPIView(ListCreateAPIView):
     http_method_names = [u'get', u'post']
     queryset = ScheduleItem.objects.all()
 
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['room'] = request.data['room']
+        return response
+
 
 class UpdateDestroyScheduleItemAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ScheduleItemSerializer

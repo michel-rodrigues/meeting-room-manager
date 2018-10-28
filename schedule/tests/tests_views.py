@@ -36,7 +36,12 @@ class ListCreateScheduleItemTest(APITestCase):
     def test_create_item_schedule(self):
         request = self.factory.post(self.url, self.data, format='json')
         response = self.view(request).render()
+        start = self.data['start'].isoformat()
+        end = self.data['end'].isoformat()
+        self.data['start'] = start.replace('+00:00', 'Z')
+        self.data['end'] = end.replace('+00:00', 'Z')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data, self.data)
 
     def test_fail_create_item_schedule_when_room_slug_is_missing(self):
         self.data.pop('room')
@@ -109,8 +114,8 @@ class UpdateDestroyRoomTest(APITestCase):
         request = self.factory.put(self.url, self.data, format='json')
         response = self.view(request, pk=self.schedule_item.pk).render()
 
-        start = self.data['start'].isoformat().replace('+00:00', 'Z')
-        end = self.data['end'].isoformat().replace('+00:00', 'Z')
+        start = self.data['start'].isoformat()
+        end = self.data['end'].isoformat()
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
 
@@ -145,8 +150,8 @@ class UpdateDestroyRoomTest(APITestCase):
         request = self.factory.put(self.url, self.data, format='json')
         response = self.view(request, pk=self.schedule_item.pk).render()
 
-        start = self.data['start'].isoformat().replace('+00:00', 'Z')
-        end = self.data['end'].isoformat().replace('+00:00', 'Z')
+        start = self.data['start'].isoformat()
+        end = self.data['end'].isoformat()
         self.data['start'] = start.replace('+00:00', 'Z')
         self.data['end'] = end.replace('+00:00', 'Z')
 
