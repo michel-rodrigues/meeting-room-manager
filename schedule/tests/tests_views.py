@@ -23,10 +23,7 @@ class ListCreateScheduleItemTest(APITestCase):
         self.view = ListCreateScheduleItemAPIView.as_view()
         self.factory = APIRequestFactory()
         self.url = reverse('meetingroom:schedule:list-create')
-        self.room = Room.objects.create(
-            name='Torre Stark',
-            slug='torre-stark',
-        )
+        self.room = Room.objects.create(name='Torre Stark')
         self.data = {
             'title': 'Planning Novos Negócios',
             'room': self.room.pk,
@@ -44,7 +41,7 @@ class ListCreateScheduleItemTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, self.data)
 
-    def test_fail_create_item_schedule_when_room_slug_is_missing(self):
+    def test_fail_create_item_schedule_when_room_pk_is_missing(self):
         self.data.pop('room')
         request = self.factory.post(self.url, self.data, format='json')
         response = self.view(request).render()
@@ -95,7 +92,7 @@ class ListCreateScheduleItemTest(APITestCase):
             start=self.now + timedelta(hours=1),
             end=self.one_hour_later + timedelta(hours=1),
         )
-        room = OrderedDict(name=self.room.name, slug=self.room.slug)
+        room = OrderedDict(pk=self.room.pk, name=self.room.name)
         serialized_schedule_item_1 = OrderedDict(
             title=schedule_item_1.title,
             room=room,
@@ -125,10 +122,7 @@ class UpdateDestroyRoomTest(APITestCase):
         self.one_hour_later = self.now + timedelta(hours=1)
         self.view = UpdateDestroyScheduleItemAPIView.as_view()
         self.factory = APIRequestFactory()
-        self.room = Room.objects.create(
-            name='Torre Stark',
-            slug='torre-stark',
-        )
+        self.room = Room.objects.create(name='Torre Stark')
         self.data = {
             'title': 'Planning Novos Negócios',
             'room': self.room.pk,
@@ -180,10 +174,7 @@ class UpdateDestroyRoomTest(APITestCase):
         )
 
     def test_updating_room(self):
-        room = Room.objects.create(
-            name='Edifício Baxter',
-            slug='edificio-baxter',
-        )
+        room = Room.objects.create(name='Edifício Baxter')
         self.data['room'] = room.pk
         request = self.factory.put(self.url, self.data, format='json')
         response = self.view(request, pk=self.schedule_item.pk).render()
@@ -196,10 +187,7 @@ class UpdateDestroyRoomTest(APITestCase):
         self.assertEqual(response.data, self.data)
 
     def test_update_fail_when_there_are_period_conflict_just_changing_room(self):  # noqa: E501
-        room = Room.objects.create(
-            name='Edifício Baxter',
-            slug='edificio-baxter',
-        )
+        room = Room.objects.create(name='Edifício Baxter')
         self.data['start'] = self.now + timedelta(hours=1)
         self.data['end'] = self.one_hour_later + timedelta(hours=1)
         self.data['room'] = room.pk

@@ -11,7 +11,7 @@ from ..models import ScheduleItem
 class ScheduleItemTest(TestCase):
 
     def setUp(self):
-        self.room = Room.objects.create(name='Torre Stark', slug='torre-stark')
+        self.room = Room.objects.create(name='Torre Stark')
         self.now = timezone.now()
         self.one_hour_later = self.now + timedelta(hours=1)
         self.schedule_item_1 = ScheduleItem.objects.create(

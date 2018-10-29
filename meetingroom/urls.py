@@ -7,10 +7,10 @@ app_name = 'meetingroom'
 
 urlpatterns = [
     path('', views.CreateRoomAPIView.as_view(), name='create'),
-    path('schedule/', include('schedule.urls', namespace='schedule')),
     path(
-        '<slug:slug>/',
+        '<int:pk>/',
         views.UpdateDestroyRoomAPIView.as_view(),
         name='update-destroy'
     ),
+    path('schedule/', include('schedule.urls', namespace='schedule')),
 ]

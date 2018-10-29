@@ -12,5 +12,4 @@ class CreateRoomAPIView(CreateAPIView):
 class UpdateDestroyRoomAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = RoomSerializer
     http_method_names = [u'put', u'delete']
-    lookup_field = 'slug'
     queryset = Room.objects.all()
