@@ -6,7 +6,7 @@ from . import views
 app_name = 'meetingroom'
 
 urlpatterns = [
-    path('', views.CreateRoomAPIView.as_view(), name='create'),
+    path('', views.ListCreateRoomAPIView.as_view(), name='create'),
     path(
         '<int:pk>/',
         views.RetrieveUpdateDestroyRoomAPIView.as_view(),

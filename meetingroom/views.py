@@ -1,12 +1,15 @@
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 
 from .models import Room
 from .serializers import RoomSerializer
 
 
-class CreateRoomAPIView(CreateAPIView):
+class ListCreateRoomAPIView(ListCreateAPIView):
     serializer_class = RoomSerializer
-    http_method_names = [u'post']
+    http_method_names = [u'get', u'post']
 
 
 class RetrieveUpdateDestroyRoomAPIView(RetrieveUpdateDestroyAPIView):

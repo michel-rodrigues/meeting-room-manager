@@ -4,13 +4,13 @@ from rest_framework import status
 from rest_framework.test import APITestCase, APIRequestFactory
 
 from .models import Room
-from .views import CreateRoomAPIView, RetrieveUpdateDestroyRoomAPIView
+from .views import ListCreateRoomAPIView, RetrieveUpdateDestroyRoomAPIView
 
 
 class CreateRoomTest(APITestCase):
 
     def setUp(self):
-        self.view = CreateRoomAPIView.as_view()
+        self.view = ListCreateRoomAPIView.as_view()
         self.factory = APIRequestFactory()
         self.url = reverse('meetingroom:create')
         self.data = {'name': 'Sala da Justiça'}
