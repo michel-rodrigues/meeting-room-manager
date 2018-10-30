@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 
@@ -14,7 +13,7 @@ class ScheduleItem(BaseModel):
     end = models.DateTimeField()
 
     class Meta:
-        ordering = ('-start',)
+        ordering = ('-start', 'pk')
 
     def __repr__(self):
         date_time_pattern = '%Y-%m-%d %H:%M'

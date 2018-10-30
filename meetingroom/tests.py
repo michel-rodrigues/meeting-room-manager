@@ -18,7 +18,7 @@ class CreateRoomTest(APITestCase):
     def test_create_room(self):
         request = self.factory.post(self.url, self.data, format='json')
         response = self.view(request).render()
-        self.data['pk'] = Room.objects.first().id
+        self.data['pk'] = Room.objects.first().pk
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data, self.data)
 

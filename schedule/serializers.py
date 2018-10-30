@@ -11,7 +11,8 @@ class ScheduleItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ScheduleItem
-        fields = ('title', 'room', 'start', 'end')
+        fields = ('pk', 'title', 'room', 'start', 'end')
+        extra_kwargs = {'pk': {'read_only': True}}
 
     def create(self, validated_data):
         try:

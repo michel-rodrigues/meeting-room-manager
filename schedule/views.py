@@ -1,7 +1,9 @@
+from django_filters import rest_framework as filters
 from rest_framework.generics import (
     ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
+from .filters import ScheduleItemFilter
 from .models import ScheduleItem
 from .serializers import ScheduleItemSerializer, ScheduleItemListSerializer
 
@@ -10,6 +12,8 @@ class ListCreateScheduleItemAPIView(ListCreateAPIView):
     serializer_class = ScheduleItemSerializer
     list_serializer_class = ScheduleItemListSerializer
     http_method_names = [u'get', u'post']
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = ScheduleItemFilter
     queryset = ScheduleItem.objects.all().select_related('room')
 
     def list(self, request, *args, **kwargs):
