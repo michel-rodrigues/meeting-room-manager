@@ -10,8 +10,6 @@ help: ## This help
 build: ## Build the container and project
 	docker build --tag $(IMAGE) .
 	docker stop $(CONTAINER) || true && docker rm $(CONTAINER) || true
-	docker run -dit --name $(CONTAINER) -v $(shell pwd):/deploy -p 8000:8000 $(IMAGE) /bin/sh
-	$(MANAGECMD) /bin/sh -c "python manage.py migrate"
 
 run: ## Run container
 	docker run -dit --name $(CONTAINER) -v $(shell pwd):/deploy -p 8000:8000 $(IMAGE) /bin/sh
@@ -35,7 +33,7 @@ cmd: ## Access container bash
 
 up: ## Start container and webserver
 	docker restart $(CONTAINER)
-	$(MANAGECMD) /bin/sh -c "python manage.py runserver 0.0.0.0:8000"
+	$(MANAGECMD) /bin/sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
 
 down: ## Stop container
 	docker stop $(CONTAINER)
