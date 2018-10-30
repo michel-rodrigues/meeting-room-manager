@@ -9,10 +9,10 @@ from .serializers import RoomSerializer
 
 class ListCreateRoomAPIView(ListCreateAPIView):
     serializer_class = RoomSerializer
-    http_method_names = [u'get', u'post']
+    http_method_names = ['get', 'post']
 
 
 class RetrieveUpdateDestroyRoomAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = RoomSerializer
-    http_method_names = [u'get', u'put', u'delete']
+    http_method_names = ['get', 'put', 'delete']
     queryset = Room.objects.all()

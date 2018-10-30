@@ -11,7 +11,7 @@ from .serializers import ScheduleItemSerializer, ScheduleItemListSerializer
 class ListCreateScheduleItemAPIView(ListCreateAPIView):
     serializer_class = ScheduleItemSerializer
     list_serializer_class = ScheduleItemListSerializer
-    http_method_names = [u'get', u'post']
+    http_method_names = ['get', 'post']
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = ScheduleItemFilter
     queryset = ScheduleItem.objects.all().select_related('room')
@@ -23,5 +23,5 @@ class ListCreateScheduleItemAPIView(ListCreateAPIView):
 
 class RetrieveUpdateDestroyScheduleItemAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ScheduleItemSerializer
-    http_method_names = [u'get', u'put', u'delete']
+    http_method_names = ['get', 'put', 'delete']
     queryset = ScheduleItem.objects.all()
