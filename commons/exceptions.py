@@ -1,9 +1,6 @@
+from rest_framework import status
+from rest_framework.exceptions import APIException
 
-class ScheduleConflict(Exception):
 
-    def __init__(self, message, code):
-        self.message = message
-        self.code = code
-
-    def __repr__(self):
-        return '<ScheduleConflict({}, {})'.format(self.message, self.code)
+class ScheduleConflict(APIException):
+    status_code = status.HTTP_409_CONFLICT

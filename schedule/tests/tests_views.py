@@ -74,22 +74,22 @@ class CreateScheduleItemTest(APITestCase):
         self.data['end'] = self.one_hour_later + timedelta(minutes=30)
         request = self.factory.post(self.url, self.data, format='json')
         response = self.view(request).render()
-        error_detail = response.data['room'][0]
+        error_detail = response.data['detail']
         error_message = 'The room is already booked in this period.'
-        self.assertEqual(error_detail.code, 'conflict')
+        self.assertEqual(error_detail.code, 'period_conflict')
         self.assertEqual(str(error_detail), error_message)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
     def test_fail_when_date_on_start_field_is_after_date_on_end_field(self):
         self.data['start'] = self.now + timedelta(minutes=1)
         self.data['end'] = self.now
         request = self.factory.post(self.url, self.data, format='json')
         response = self.view(request).render()
-        error_detail = response.data['room'][0]
+        error_detail = response.data['detail']
         error_message = 'Start date must begin before end date.'
-        self.assertEqual(error_detail.code, 'inverted_date_fields')
+        self.assertEqual(error_detail.code, 'inverted_date_values')
         self.assertEqual(str(error_detail), error_message)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
 
 
 class ListCreateScheduleItemTest(APITestCase):
@@ -338,9 +338,9 @@ class UpdateDestroyRoomTest(APITestCase):
         )
         request = self.factory.put(self.url, self.data, format='json')
         response = self.view(request, pk=self.schedule_item.pk).render()
-        error_detail = response.data['room'][0]
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(error_detail.code, 'conflict')
+        error_detail = response.data['detail']
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+        self.assertEqual(error_detail.code, 'period_conflict')
         self.assertEqual(
             str(error_detail),
             'The room is already booked in this period.'
@@ -374,9 +374,9 @@ class UpdateDestroyRoomTest(APITestCase):
         )
         request = self.factory.put(self.url, self.data, format='json')
         response = self.view(request, pk=self.schedule_item.pk).render()
-        error_detail = response.data['room'][0]
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(error_detail.code, 'conflict')
+        error_detail = response.data['detail']
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+        self.assertEqual(error_detail.code, 'period_conflict')
         self.assertEqual(
             str(error_detail),
             'The room is already booked in this period.'

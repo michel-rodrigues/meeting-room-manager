@@ -37,8 +37,8 @@ class ScheduleItemTest(TestCase):
         with self.assertRaises(ScheduleConflict) as error:
             self.schedule_item_2.save()
         error_message = 'The room is already booked in this period.'
-        self.assertEqual(error.exception.message, error_message)
-        self.assertEqual(error.exception.code, 'conflict')
+        self.assertEqual(str(error.exception.detail), error_message)
+        self.assertEqual(error.exception.get_codes(), 'period_conflict')
 
     def test_when_other_item_has_field_start_within_item_period(self):
         self.schedule_item_2.start = self.now + timedelta(minutes=30)
@@ -47,8 +47,8 @@ class ScheduleItemTest(TestCase):
         with self.assertRaises(ScheduleConflict) as error:
             self.schedule_item_2.save()
         error_message = 'The room is already booked in this period.'
-        self.assertEqual(error.exception.message, error_message)
-        self.assertEqual(error.exception.code, 'conflict')
+        self.assertEqual(str(error.exception.detail), error_message)
+        self.assertEqual(error.exception.get_codes(), 'period_conflict')
 
     def test_when_other_item_has_field_end_within_item_period(self):
         self.schedule_item_2.start = self.now - timedelta(minutes=30)
@@ -57,8 +57,8 @@ class ScheduleItemTest(TestCase):
         with self.assertRaises(ScheduleConflict) as error:
             self.schedule_item_2.save()
         error_message = 'The room is already booked in this period.'
-        self.assertEqual(error.exception.message, error_message)
-        self.assertEqual(error.exception.code, 'conflict')
+        self.assertEqual(str(error.exception.detail), error_message)
+        self.assertEqual(error.exception.get_codes(), 'period_conflict')
 
     def test_when_the_period_begins_immediately_after_another_item(self):
         self.schedule_item_2.start = self.now + timedelta(hours=1)
@@ -82,5 +82,5 @@ class ScheduleItemTest(TestCase):
         with self.assertRaises(ScheduleConflict) as error:
             self.schedule_item_2.save()
         error_message = 'Start date must begin before end date.'
-        self.assertEqual(error.exception.message, error_message)
-        self.assertEqual(error.exception.code, 'inverted_date_fields')
+        self.assertEqual(str(error.exception.detail), error_message)
+        self.assertEqual(error.exception.get_codes(), 'inverted_date_values')

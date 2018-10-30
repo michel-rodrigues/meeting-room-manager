@@ -28,8 +28,8 @@ class ScheduleItem(BaseModel):
         edit = self._is_editing()
         if not self._room_available(edit):
             raise ScheduleConflict(
-                message='The room is already booked in this period.',
-                code='conflict',
+                'The room is already booked in this period.',
+                'period_conflict'
             )
         super().save(*args, **kwargs)
 
@@ -50,6 +50,6 @@ class ScheduleItem(BaseModel):
     def clean(self):
         if self.start >= self.end:
             raise ScheduleConflict(
-                message='Start date must begin before end date.',
-                code='inverted_date_fields',
+                'Start date must begin before end date.',
+                'inverted_date_values'
             )
