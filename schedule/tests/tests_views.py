@@ -11,7 +11,7 @@ from meetingroom.models import Room
 from ..models import ScheduleItem
 from ..views import (
     ListCreateScheduleItemAPIView,
-    UpdateDestroyScheduleItemAPIView,
+    RetrieveUpdateDestroyScheduleItemAPIView,
 )
 
 
@@ -291,7 +291,7 @@ class UpdateDestroyRoomTest(APITestCase):
     def setUp(self):
         self.now = timezone.now()
         self.one_hour_later = self.now + timedelta(hours=1)
-        self.view = UpdateDestroyScheduleItemAPIView.as_view()
+        self.view = RetrieveUpdateDestroyScheduleItemAPIView.as_view()
         self.factory = APIRequestFactory()
         self.room = Room.objects.create(name='Torre Stark')
         self.data = {

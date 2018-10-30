@@ -21,7 +21,7 @@ class ListCreateScheduleItemAPIView(ListCreateAPIView):
         return super().list(request, *args, **kwargs)
 
 
-class UpdateDestroyScheduleItemAPIView(RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateDestroyScheduleItemAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = ScheduleItemSerializer
-    http_method_names = [u'put', u'delete']
+    http_method_names = [u'get', u'put', u'delete']
     queryset = ScheduleItem.objects.all()

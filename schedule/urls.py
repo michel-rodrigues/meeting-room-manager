@@ -13,7 +13,7 @@ urlpatterns = [
     ),
     path(
         '<int:pk>/',
-        views.UpdateDestroyScheduleItemAPIView.as_view(),
+        views.RetrieveUpdateDestroyScheduleItemAPIView.as_view(),
         name='update-destroy'
     ),
 ]

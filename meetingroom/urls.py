@@ -9,7 +9,7 @@ urlpatterns = [
     path('', views.CreateRoomAPIView.as_view(), name='create'),
     path(
         '<int:pk>/',
-        views.UpdateDestroyRoomAPIView.as_view(),
+        views.RetrieveUpdateDestroyRoomAPIView.as_view(),
         name='update-destroy'
     ),
     path('schedule/', include('schedule.urls', namespace='schedule')),
