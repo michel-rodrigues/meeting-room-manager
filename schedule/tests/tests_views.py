@@ -80,6 +80,17 @@ class CreateScheduleItemTest(APITestCase):
         self.assertEqual(str(error_detail), error_message)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_fail_when_date_on_start_field_is_after_date_on_end_field(self):
+        self.data['start'] = self.now + timedelta(minutes=1)
+        self.data['end'] = self.now
+        request = self.factory.post(self.url, self.data, format='json')
+        response = self.view(request).render()
+        error_detail = response.data['room'][0]
+        error_message = 'Start date must begin before end date.'
+        self.assertEqual(error_detail.code, 'inverted_date_fields')
+        self.assertEqual(str(error_detail), error_message)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 class ListCreateScheduleItemTest(APITestCase):
 

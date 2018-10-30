@@ -24,9 +24,13 @@ class ScheduleItem(BaseModel):
         )
 
     def save(self, *args, **kwargs):
+        self.clean()
         edit = self._is_editing()
         if not self._room_available(edit):
-            raise ScheduleConflict()
+            raise ScheduleConflict(
+                message='The room is already booked in this period.',
+                code='conflict',
+            )
         super().save(*args, **kwargs)
 
     def _is_editing(self):
@@ -42,3 +46,10 @@ class ScheduleItem(BaseModel):
         if edit:
             schedule_items = schedule_items.exclude(id=self.id)
         return not schedule_items.exists()
+
+    def clean(self):
+        if self.start >= self.end:
+            raise ScheduleConflict(
+                message='Start date must begin before end date.',
+                code='inverted_date_fields',
+            )

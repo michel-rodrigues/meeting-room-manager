@@ -75,3 +75,12 @@ class ScheduleItemTest(TestCase):
         self.schedule_item_1.save()
         last_update = self.schedule_item_1.updated_at
         self.assertGreater(last_update, previous_update)
+
+    def test_when_set_field_start_greater_than_end(self):
+        self.schedule_item_2.start = self.now + timedelta(minutes=1)
+        self.schedule_item_2.end = self.now
+        with self.assertRaises(ScheduleConflict) as error:
+            self.schedule_item_2.save()
+        error_message = 'Start date must begin before end date.'
+        self.assertEqual(error.exception.message, error_message)
+        self.assertEqual(error.exception.code, 'inverted_date_fields')
