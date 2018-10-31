@@ -1,18 +1,71 @@
 # meeting-room-manager
 
-#### Iniciar o projeto:
+### Requisitos:
+
+- Docker: https://docs.docker.com/install/
+
+### Iniciar o projeto:
 
 Após clonar/baixar o repositório, dentro do diretório raiz do projeto rode no terminal
 
 make build && make run && make up
 
-#### Para utilizar o Browsable API acesse:
+### Para utilizar o Browsable API acesse:
 
-Recurso das salas - http://127.0.0.1:8000/meeting-room/
+**Recurso das salas**
 
-Recurso de agendamento - http://127.0.0.1:8000/meeting-room/schedule/
+URI :: http://127.0.0.1:8000/meeting-room/
 
-#### Testes e utilidades:
+Métodos permitidos:
+
+- GET
+- POST :: Exemplo de dados de envio:
+{
+    "name": "Torre Stark"
+}
+
+URI :: http://127.0.0.1:8000/meeting-room/{int}/
+
+Métodos permitidos:
+
+- GET
+- DELETE
+- PUT :: Exemplo de dados de envio:
+{
+    "name": "Sala da Justiça"
+}
+
+
+**Recurso de agendamento**
+
+URI :: http://127.0.0.1:8000/meeting-room/schedule/
+
+Métodos permitidos:
+
+- GET
+- POST :: Exemplo de dados de envio:
+{
+    "title": "Reunião da Liga da Justiça",
+    "room": 3,
+    "start": "2018-10-06T00:00:00Z",
+    "end": "2018-10-06T00:50:00Z"
+}
+
+URI :: http://127.0.0.1:8000/meeting-room/schedule/{int}/
+
+Métodos permitidos:
+
+- GET
+- DELETE
+- PUT :: Exemplo de dados de envio:
+{
+    "title": "Reunião da Liga da Justiça",
+    "room": 3,
+    "start": "2018-10-06T00:00:00Z",
+    "end": "2018-10-06T00:50:00Z"
+}
+
+### Testes e utilidades:
 
 Rodar testes:
 
