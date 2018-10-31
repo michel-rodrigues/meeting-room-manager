@@ -10,7 +10,7 @@ Após clonar/baixar o repositório, dentro do diretório raiz do projeto rode no
 
 make build && make run && make up
 
-### Para utilizar o Browsable API acesse:
+### Para utilizar o Browsable API acesse no seu browser as seguintes URIs:
 
 **Recurso das salas**
 
