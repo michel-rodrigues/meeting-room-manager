@@ -27,6 +27,8 @@ SECRET_KEY = 'u6x9w2t4yd)n7m^5b4-m^5od8b@rbuhsmgk5(!*b!)z%w%fq5r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+TESTS_IN_PROGRES = 'test' in sys.argv
+
 ALLOWED_HOSTS = []
 
 
@@ -100,10 +102,6 @@ DATABASES = {
     }
 }
 
-if 'test' in sys.argv:
-    TESTS_IN_PROGRESS = True
-    MIGRATION_MODULES = DisableMigrations()
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
@@ -159,3 +157,8 @@ LOGGING = {
         },
     },
 }
+
+if TESTS_IN_PROGRES:
+    import logging
+    logging.disable(logging.CRITICAL)
+    MIGRATION_MODULES = DisableMigrations()
