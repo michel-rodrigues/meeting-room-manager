@@ -3,8 +3,8 @@ from datetime import timedelta
 from django.test import TestCase
 from django.utils import timezone
 
-from commons.exceptions import ScheduleConflict
 from meetingroom.models import Room
+from ..exceptions import ScheduleConflict
 from ..models import ScheduleItem
 
 

@@ -2,8 +2,8 @@ from django.db import models
 from django.db.models import Q
 
 from commons.base_models import BaseModel
-from commons.exceptions import ScheduleConflict
 from meetingroom.models import Room
+from .exceptions import ScheduleConflict
 
 
 class ScheduleItem(BaseModel):
